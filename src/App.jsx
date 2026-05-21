@@ -1,4 +1,4 @@
- import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 
 export default function App() {
@@ -9,7 +9,10 @@ export default function App() {
 
   const [loading, setLoading] = useState(true);
 
- 
+  // État pour le filtre des boutons
+  const [filterType, setFilterType] = useState("all");
+
+  
 
   // Gestion de la persistance des captures
 
@@ -34,7 +37,7 @@ export default function App() {
 
         const data = await res.json();
 
-       
+        
 
         const details = await Promise.all(data.results.map(async (f) => {
 
@@ -78,7 +81,15 @@ export default function App() {
   };
 
 
-  const filtered = allForms.filter(p => p.name.includes(search.toLowerCase()));
+  // Logique de filtrage par recherche ET par bouton
+  const filtered = allForms.filter(p => {
+    const matchesSearch = p.name.includes(search.toLowerCase());
+    const isCaught = caught.includes(p.id);
+    
+    if (filterType === "caught") return matchesSearch && isCaught;
+    if (filterType === "uncaught") return matchesSearch && !isCaught;
+    return matchesSearch;
+  });
 
 
   return (
@@ -87,7 +98,14 @@ export default function App() {
 
       <h1>Pokédex Complet Sans Dimorphisme</h1>
 
-     
+      
+      {/* Boutons de filtrage */}
+      <div style={{ marginBottom: 20 }}>
+        <button onClick={() => setFilterType("all")}>Tous</button>
+        <button onClick={() => setFilterType("caught")} style={{ marginLeft: 10 }}>Capturés</button>
+        <button onClick={() => setFilterType("uncaught")} style={{ marginLeft: 10 }}>Non capturés</button>
+      </div>
+
 
       <input
 
@@ -134,11 +152,21 @@ export default function App() {
 
                 style={{ width: '80px', height: '80px', objectFit: 'contain' }}
 
+                
+
               />
 
               <div style={{ textTransform: 'capitalize', fontWeight: 'bold', fontSize: '11px', marginTop: 5 }}>
 
                 {p.name}
+
+              </div>
+
+               <div style={{ textTransform: 'capitalize', fontWeight: 'bold', fontSize: '11px', marginTop: 5 }}>
+
+              </div> 
+
+              <div style={{ textTransform: 'capitalize', fontWeight: 'bold', fontSize: '11px', marginTop: 5 }}>
 
               </div>
 
@@ -166,18 +194,11 @@ export default function App() {
         </div>
 
       )
-      <div style={{ textTransform: 'capitalize', fontWeight: 'bold', fontSize: '11px', marginTop: 5 }}>
-  {p.name}
-  {/* Ajout du symbole de dimorphisme ici */}
-  {p.hasGenderDiff && (
-    <span style={{ marginLeft: 5, cursor: 'help' }} title="Possède un dimorphisme sexuel">
-      ⚧️
-    </span>
-  )}
-</div>}
+
+      }
 
     </div>
 
   );
 
-} 
+}
