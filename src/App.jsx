@@ -33,7 +33,7 @@ export default function App() {
 
         // La route "pokemon-form" est la plus exhaustive pour les variantes (saisons, mégas, etc.)
 
-        const res = await fetch("https://pokeapi.co/api/v2/pokemon-form?limit=2000");
+        const res = await fetch("https://pokeapi.co/api/v2/pokemon-form?limit=4000");
 
         const data = await res.json();
 
@@ -104,6 +104,11 @@ export default function App() {
         <button onClick={() => setFilterType("all")}>Tous</button>
         <button onClick={() => setFilterType("caught")} style={{ marginLeft: 10 }}>Capturés</button>
         <button onClick={() => setFilterType("uncaught")} style={{ marginLeft: 10 }}>Non capturés</button>
+        
+        {/* Affichage du nombre de Pokémon */}
+        <p style={{ marginTop: 10, fontSize: '14px', color: '#666' }}>
+          Affichage : {filtered.length} Pokémon
+        </p>
       </div>
 
 
