@@ -165,7 +165,16 @@ export default function App() {
 
         </div>
 
-      )}
+      )
+      <div style={{ textTransform: 'capitalize', fontWeight: 'bold', fontSize: '11px', marginTop: 5 }}>
+  {p.name}
+  {/* Ajout du symbole de dimorphisme ici */}
+  {p.hasGenderDiff && (
+    <span style={{ marginLeft: 5, cursor: 'help' }} title="Possède un dimorphisme sexuel">
+      ⚧️
+    </span>
+  )}
+</div>}
 
     </div>
 
